@@ -7,4 +7,6 @@ class PostUseCase @Inject constructor(
     private val repository: PostRepository
 ) {
     suspend fun invoke() = repository.getPosts()
+
+    suspend fun getPostById(id: Int) = repository.getPostById(id)
 }
