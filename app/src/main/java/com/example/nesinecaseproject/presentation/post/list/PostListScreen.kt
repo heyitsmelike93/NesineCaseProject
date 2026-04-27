@@ -1,5 +1,6 @@
 package com.example.nesinecaseproject.presentation.post.list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.nesinecaseproject.domain.model.Post
 
@@ -38,7 +38,7 @@ import com.example.nesinecaseproject.domain.model.Post
 @Composable
 fun PostListScreen(
     viewModel: PostListViewModel = hiltViewModel(),
-    navController: NavController
+    onPostClick: (Int) -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -78,7 +78,7 @@ fun PostListScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(uiState.posts, key = { it.id }) { post ->
-                        UserItem(post)
+                        UserItem(post, onPostClick)
                     }
                 }
             }
@@ -88,13 +88,15 @@ fun PostListScreen(
 
 @Composable
 fun UserItem(
-    post: Post
+    post: Post,
+    onPostClick: (Int) -> Unit
 ) {
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(12.dp)
+                .clickable { onPostClick.invoke(post.id) },
             verticalAlignment = Alignment.CenterVertically
         ) {
 
