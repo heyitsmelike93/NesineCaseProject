@@ -1,7 +1,9 @@
 package com.example.nesinecaseproject.data.remote.api
 
 import com.example.nesinecaseproject.data.remote.dto.PostDto
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.Path
 
 interface PostApi {
@@ -13,5 +15,11 @@ interface PostApi {
     suspend fun getPostById(
         @Path("id") id: Int
     ): PostDto
+
+    @PATCH("posts/{id}")
+    suspend fun updatePost(
+        @Path("id") id: Int,
+        @Body post : PostDto
+    ) : PostDto
 
 }
