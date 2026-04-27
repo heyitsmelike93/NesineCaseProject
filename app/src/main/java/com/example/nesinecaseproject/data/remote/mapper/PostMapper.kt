@@ -12,3 +12,12 @@ fun PostDto.toDomain(): Post {
         imageUrl = "https://picsum.photos/300/300?random=$id"
     )
 }
+
+fun Post.toDto() : PostDto {
+    return PostDto(
+        userId = userId,
+        id = id,
+        title = title,
+        body = body,
+    )
+}
