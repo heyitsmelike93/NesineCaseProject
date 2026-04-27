@@ -203,9 +203,11 @@ fun UserItem(
             AsyncImage(
                 model = post.imageUrl,
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(52.dp)
                     .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             )
 
             Spacer(modifier = Modifier.width(12.dp))
