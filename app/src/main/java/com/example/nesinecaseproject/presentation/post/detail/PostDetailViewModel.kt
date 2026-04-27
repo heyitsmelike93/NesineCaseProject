@@ -47,7 +47,6 @@ class PostDetailViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         post = post,
-                        isLoading = false,
                         isUpdated = true
                     )
                 }

@@ -15,6 +15,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -39,11 +42,17 @@ fun PostDetailScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
     var title by remember { mutableStateOf("") }
     var body by remember { mutableStateOf("") }
 
     LaunchedEffect(uiState.isUpdated) {
         if (uiState.isUpdated) {
+
+            snackbarHostState.showSnackbar(
+                message ="Update request sent successfully")
+
             navController.previousBackStackEntry
                 ?.savedStateHandle
                 ?.set("shouldRefresh", true)
@@ -53,6 +62,9 @@ fun PostDetailScreen(
     }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             TopAppBar(title = { Text("Edit Post") }, navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
