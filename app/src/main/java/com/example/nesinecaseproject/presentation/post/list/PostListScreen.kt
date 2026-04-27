@@ -138,19 +138,12 @@ fun SwipeToDeleteItem(
     onClick: () -> Unit
 ) {
     var isVisible by remember { mutableStateOf(true) }
-    val scope = rememberCoroutineScope()
 
     val state = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
             if (value == SwipeToDismissBoxValue.EndToStart) {
-
                 isVisible = false
-
-                scope.launch {
-                    delay(450)
-                    onDelete(post)
-                }
-
+                onDelete(post)
                 false
             } else {
                 false

@@ -39,9 +39,10 @@ class PostListViewModel @Inject constructor(
     }
 
     fun deletePost(id: Int) {
-        _uiState.value = _uiState.value.copy(
-            posts = _uiState.value.posts.filter { it.id != id }
-        )
+        viewModelScope.launch {
+            delay(450)
+            _uiState.update { it.copy(posts = it.posts.filter { post -> post.id != id }) }
+        }
     }
 
 }
