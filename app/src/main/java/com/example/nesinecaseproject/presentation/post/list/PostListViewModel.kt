@@ -23,7 +23,7 @@ class PostListViewModel @Inject constructor(
         getPosts()
     }
 
-    private fun getPosts() {
+    fun getPosts() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {

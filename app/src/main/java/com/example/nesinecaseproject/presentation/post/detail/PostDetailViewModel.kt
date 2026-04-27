@@ -3,6 +3,7 @@ package com.example.nesinecaseproject.presentation.post.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nesinecaseproject.domain.model.Post
 import com.example.nesinecaseproject.domain.usecase.PostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +35,26 @@ class PostDetailViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
+        }
+    }
 
+    fun updatePost(updatedPost: Post) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                val post = postUseCase.updatePost(updatedPost)
+
+                _uiState.update {
+                    it.copy(
+                        post = post,
+                        isLoading = false,
+                        isUpdated = true
+                    )
+                }
+
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
         }
     }
 }

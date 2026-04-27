@@ -17,15 +17,14 @@ fun AppNavigation() {
     val navController = rememberNavController()
 
     NavHost(
-        navController = navController,
-        startDestination = Screen.PostList.route
+        navController = navController, startDestination = Screen.PostList.route
     ) {
 
         composable(
             Screen.PostList.route
         ) {
             PostListScreen(
-                onPostClick = { postId ->
+                navController = navController, onPostClick = { postId ->
                     navController.navigate(
                         Screen.PostDetail.createRoute(postId)
                     )
@@ -33,12 +32,10 @@ fun AppNavigation() {
         }
 
         composable(
-            Screen.PostDetail.route,
-            arguments = listOf(
+            Screen.PostDetail.route, arguments = listOf(
                 navArgument("id") {
                     type = NavType.IntType
-                }
-            )
+                })
         ) {
             val viewModel: PostDetailViewModel = hiltViewModel()
             PostDetailScreen(navController = navController, viewModel = viewModel)

@@ -42,6 +42,16 @@ fun PostDetailScreen(
     var title by remember { mutableStateOf("") }
     var body by remember { mutableStateOf("") }
 
+    LaunchedEffect(uiState.isUpdated) {
+        if (uiState.isUpdated) {
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set("shouldRefresh", true)
+
+            navController.popBackStack()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Edit Post") }, navigationIcon = {
@@ -104,7 +114,14 @@ fun PostDetailScreen(
 
                     Button(
                         onClick = {
-                            navController.popBackStack()
+                            uiState.post?.copy(
+                                title = title,
+                                body = body
+                            )?.let {
+                                viewModel.updatePost(
+                                    updatedPost = it
+                                )
+                            }
                         }, modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Save")

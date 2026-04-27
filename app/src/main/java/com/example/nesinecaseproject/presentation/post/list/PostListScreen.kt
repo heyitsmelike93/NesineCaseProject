@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.nesinecaseproject.domain.model.Post
 
@@ -38,10 +40,26 @@ import com.example.nesinecaseproject.domain.model.Post
 @Composable
 fun PostListScreen(
     viewModel: PostListViewModel = hiltViewModel(),
+    navController: NavController,
     onPostClick: (Int) -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(true) {
+        navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getStateFlow("shouldRefresh", false)
+            ?.collect { refresh ->
+                if (refresh) {
+                    viewModel.getPosts()
+
+                    navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("shouldRefresh", false)
+                }
+            }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
