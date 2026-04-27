@@ -7,6 +7,7 @@ import com.example.nesinecaseproject.domain.usecase.PostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +21,7 @@ class PostDetailViewModel @Inject constructor(
     private val postId: Int = checkNotNull(savedStateHandle["id"]) { "postId is required" }
 
     private val _uiState = MutableStateFlow(PostDetailUIState())
-    val uiState: StateFlow<PostDetailUIState> = _uiState
+    val uiState: StateFlow<PostDetailUIState> = _uiState.asStateFlow()
 
     init {
         getPostById(postId)
